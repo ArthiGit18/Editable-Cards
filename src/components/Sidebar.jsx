@@ -1,6 +1,15 @@
 import React, {useRef} from "react";
 import "../App.scss";
 
+
+const stickers = [
+  "/assets/stickers/heart.png",
+  "/assets/stickers/star.png",
+  "/assets/stickers/smile.png",
+];
+
+const emojis = ["😊", "🎉", "🌸", "🔥", "❤️", "🌟", "🐱", "🦋", "🍀"];
+
 const Sidebar = ({
   addCard,
   showPreview,
@@ -9,7 +18,8 @@ const Sidebar = ({
   setShowTemplates,
   activeCard,
   updateCard,
-  onAddTextField, onUploadImage 
+  onAddTextField, onUploadImage ,
+   onAddCard, onDragStickerStart, onAddEmoji
 }) => {
   const handleStyleChange = (field, value) => {
     if (!activeCard) return;
@@ -46,14 +56,6 @@ const fileInputRef = useRef();
             />
           </div>
 
-          <div className="style-group">
-            <h4>Text Color</h4>
-            <input
-              type="color"
-              value={activeCard.textColor}
-              onChange={(e) => handleStyleChange("textColor", e.target.value)}
-            />
-          </div>
 
           <div className="style-group">
             <h4>Border Radius</h4>
@@ -110,19 +112,27 @@ const fileInputRef = useRef();
             </div>
           </div>
 
-                <div className="section">
-        <h4>Stickers / Images</h4>
-        <button onClick={() => fileInputRef.current.click()}>
-          Upload Image
-        </button>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleImageUpload}
-          style={{ display: "none" }}
-        />
-      </div>
+           
+
+      <div className="sidebar-section">
+        <h4>Emojis</h4>
+        <div className="emoji-library">
+          {emojis.map((emoji, i) => (
+            <span
+              key={i}
+              className="emoji"
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData("emoji", emoji);
+              }}
+            >
+              {emoji}
+            </span>
+          ))}
+        </div>
+        </div>
+
+               
 
         </>
       )}
