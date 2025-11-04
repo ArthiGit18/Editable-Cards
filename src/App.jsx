@@ -125,7 +125,29 @@ const App = () => {
         )}
       </div>
 
-      {showTemplates && <TemplatesPanel />}
+      {showTemplates && (
+  <TemplatesPanel
+    onSelectTemplate={(template) => {
+      const newCard = {
+        id: Date.now(),
+        fields: [],
+        images: [],
+        backgroundColor: template.backgroundColor,
+        textColor: template.textColor,
+        borderRadius: template.borderRadius,
+        fontSize: template.fontSize,
+        fontStyle: template.fontStyle,
+        textAlign: "left",
+        lineHeight: 1.5,
+      };
+      setCards((prev) => [...prev, newCard]);
+      setActiveCardId(newCard.id);
+      setShowTemplates(false);
+    }}
+  />
+)}
+
+
     </div>
   );
 };
