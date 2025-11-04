@@ -18,10 +18,12 @@ const CardPreview = ({
     showPreview,
     onSelect,
     isActive,
+    deleteCard
 }) => {
     const [fields, setFields] = useState(card.fields || []);
     const [menuOpenId, setMenuOpenId] = useState(null);
     const [cardImages, setCardImages] = useState(card.images || []);
+    
 
     useEffect(() => {
         updateCard(card.id, { fields, images: cardImages });
@@ -111,6 +113,9 @@ const CardPreview = ({
         setCardImages((prev) => [...prev, { id: Date.now(), emoji, x, y }]);
     };
 
+    
+
+
     const deleteImage = (id) =>
         setCardImages(cardImages.filter((img) => img.id !== id));
 
@@ -147,9 +152,9 @@ const CardPreview = ({
                 zIndex: isActive ? 1 : 0,
             }}
             // onDragOver={(e) => e.preventDefault()}
-           onDrop={(e) => {
-    handleEmojiDrop(e);
-}}
+            onDrop={(e) => {
+                handleEmojiDrop(e);
+            }}
 
             onClick={onSelect}
             onDragOver={handleDragOver}
@@ -169,9 +174,9 @@ const CardPreview = ({
                     draggable={!showPreview}
                     onDragEnd={(e) => handleImageDrag(e, item.id)}
                 >
-                    
-                        <span>{item.emoji}</span>
-                    
+
+                    <span>{item.emoji}</span>
+
                     {!showPreview && (
                         <button className="delete-img" onClick={() => deleteImage(item.id)}>
                             ❌
@@ -209,10 +214,19 @@ const CardPreview = ({
                         onChange={handleFileChange}
                         style={{ display: "none" }}
                     />
+
+                    <button
+  className="toolbar-btn delete-btn"
+  onClick={() => deleteCard(card.id)}
+>
+  <DeleteIcon /> Delete Card
+</button>
+
+
                 </div>
             )}
 
-            <div className="fields-container">
+            <>
                 {/* --- TEXT / PARAGRAPH / DRAG TEXT --- */}
                 {fields.map((field, index) => (
                     <div
@@ -229,6 +243,7 @@ const CardPreview = ({
                             top: field.y,
                             left: field.x,
                             cursor: field.type === "draggable" ? "move" : "default",
+                            width: field.type === "draggable" ? "auto" : "80%",
                         }}
                         onDragEnd={
                             field.type === "draggable"
@@ -384,8 +399,8 @@ const CardPreview = ({
                     </div>
                 ))}
 
-               
-            </div>
+
+            </>
         </div>
     );
 };

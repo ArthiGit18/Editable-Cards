@@ -10,6 +10,7 @@ const App = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
 
+
   const addCard = () => {
     const newCard = {
       id: Date.now(),
@@ -30,6 +31,12 @@ const App = () => {
   const updateCard = (id, updates) => {
     setCards((prev) => prev.map((card) => (card.id === id ? { ...card, ...updates } : card)));
   };
+
+  const deleteCard = (id) => {
+  setCards((prev) => prev.filter((card) => card.id !== id));
+  if (activeCardId === id) setActiveCardId(null);
+};
+
 
   const activeCard = cards.find((c) => c.id === activeCardId) || null;
 
@@ -74,21 +81,21 @@ const App = () => {
 
   return (
     <div className="app">
-     <Sidebar
-  addCard={addCard}
-  showPreview={showPreview}
-  setShowPreview={setShowPreview}
-  showTemplates={showTemplates}
-  setShowTemplates={setShowTemplates}
-  activeCard={activeCard}
-  updateCard={updateCard}
-  onUploadImage={(src) => {
-    if (activeCard) {
-      const newImages = [...(activeCard.images || []), { id: Date.now(), src, x: 50, y: 50 }];
-      updateCard(activeCard.id, { images: newImages });
-    }
-  }}
-/>
+      <Sidebar
+        addCard={addCard}
+        showPreview={showPreview}
+        setShowPreview={setShowPreview}
+        showTemplates={showTemplates}
+        setShowTemplates={setShowTemplates}
+        activeCard={activeCard}
+        updateCard={updateCard}
+        onUploadImage={(src) => {
+          if (activeCard) {
+            const newImages = [...(activeCard.images || []), { id: Date.now(), src, x: 50, y: 50 }];
+            updateCard(activeCard.id, { images: newImages });
+          }
+        }}
+      />
 
       <div className="main">
         {cards.map((card) => (
@@ -99,13 +106,21 @@ const App = () => {
             showPreview={showPreview}
             onSelect={() => selectCard(card.id)}
             isActive={card.id === activeCardId}
+            deleteCard={deleteCard}
           />
         ))}
 
         {showPreview && cards.length > 0 && (
           <div className="preview-buttons">
-            <button onClick={() => alert("Saved!")}>Save</button>
-            <button onClick={() => window.print()}>Print</button>
+            <button className="save-btn" onClick={() => alert("Card Saved!")}>
+              💾 Save
+            </button>
+            <button
+              className="print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
+            </button>
           </div>
         )}
       </div>
