@@ -33,48 +33,13 @@ const App = () => {
   };
 
   const deleteCard = (id) => {
-  setCards((prev) => prev.filter((card) => card.id !== id));
-  if (activeCardId === id) setActiveCardId(null);
-};
+    setCards((prev) => prev.filter((card) => card.id !== id));
+    if (activeCardId === id) setActiveCardId(null);
+  };
 
 
   const activeCard = cards.find((c) => c.id === activeCardId) || null;
 
-  // add a text field to the active card
-  const addFieldToActiveCard = () => {
-    if (!activeCard) {
-      alert("Please create or select a card first.");
-      return;
-    }
-    const newField = {
-      id: Date.now(),
-      text: "",
-      bold: false,
-      italic: false,
-      fontSize: activeCard.fontSize,
-      textColor: activeCard.textColor,
-      topSpace: 0,
-      bottomSpace: 0,
-    };
-    updateCard(activeCard.id, { fields: [...(activeCard.fields || []), newField] });
-  };
-
-  // upload image (dataURL) and attach to active card
-  const handleUploadImage = (dataUrl) => {
-    if (!activeCard) {
-      alert("Please create or select a card before uploading an image.");
-      return;
-    }
-    const newImage = {
-      id: Date.now(),
-      src: dataUrl,
-      x: 50,
-      y: 50,
-      width: 80,
-      rotate: 0,
-    };
-    updateCard(activeCard.id, { images: [...(activeCard.images || []), newImage] });
-  };
 
   // optional: delete card / select card helpers
   const selectCard = (id) => setActiveCardId(id);
@@ -126,26 +91,29 @@ const App = () => {
       </div>
 
       {showTemplates && (
-  <TemplatesPanel
-    onSelectTemplate={(template) => {
-      const newCard = {
-        id: Date.now(),
-        fields: [],
-        images: [],
-        backgroundColor: template.backgroundColor,
-        textColor: template.textColor,
-        borderRadius: template.borderRadius,
-        fontSize: template.fontSize,
-        fontStyle: template.fontStyle,
-        textAlign: "left",
-        lineHeight: 1.5,
-      };
-      setCards((prev) => [...prev, newCard]);
-      setActiveCardId(newCard.id);
-      setShowTemplates(false);
-    }}
-  />
-)}
+       <TemplatesPanel
+  onSelectTemplate={(template) => {
+    const newCard = {
+      id: Date.now(),
+      fields: [],
+      images: [],
+      backgroundColor: template.backgroundColor || "#ffffff",
+      textColor: template.textColor || "#000000",
+      borderRadius: template.borderRadius || 10,
+      fontSize: template.fontSize || 16,
+      fontStyle: template.fontStyle || "normal",
+      textAlign: "left",
+      lineHeight: 1.5,
+      backgroundImage: template.backgroundImage || null,
+    };
+    setCards((prev) => [...prev, newCard]);
+    setActiveCardId(newCard.id);
+    setShowTemplates(false);
+  }}
+/>
+
+
+      )}
 
 
     </div>

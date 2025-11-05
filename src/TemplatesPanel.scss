@@ -1,43 +1,108 @@
 .templates-panel {
+  width: 300px;
+  background: #fff;
+  border-left: 2px solid #eee;
+  padding: 1.2rem;
+  overflow-y: auto;
+  height: 100vh;
   position: fixed;
-  top: 70px;
-  right: 20px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 999;
-  width: 280px;
-  animation: slideIn 0.4s ease;
+  right: 0;
+  top: 0;
+  z-index: 15;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+  font-family: "Poppins", sans-serif;
 
   h3 {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 18px;
+    font-size: 1.3rem;
     color: #333;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
   }
 
-  .template-grid {
+  /* Theme template cards (top section) */
+  .template-list {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
 
-  .template-card:hover {
-    transform: scale(1.03);
-    transition: all 0.3s ease;
+    .template-card {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+      }
+
+      p {
+        margin: 0;
+        padding: 0.4rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #444;
+      }
+    }
+  }
+.accordion {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-top: 1rem;
+
+  details {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+
+    summary {
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      background: #f9f9f9;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #f1f1f1;
+      }
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      padding: 0.75rem;
+
+      .template-thumb {
+        width: 100%;
+        height: 70px;
+        border-radius: 8px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: transform 0.2s, border 0.2s;
+
+        &:hover {
+          transform: scale(1.05);
+          border-color: #0077b6;
+        }
+      }
+    }
   }
 }
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
-
-

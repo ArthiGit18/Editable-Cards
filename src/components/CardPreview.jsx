@@ -23,7 +23,7 @@ const CardPreview = ({
     const [fields, setFields] = useState(card.fields || []);
     const [menuOpenId, setMenuOpenId] = useState(null);
     const [cardImages, setCardImages] = useState(card.images || []);
-    
+
 
     useEffect(() => {
         updateCard(card.id, { fields, images: cardImages });
@@ -113,7 +113,7 @@ const CardPreview = ({
         setCardImages((prev) => [...prev, { id: Date.now(), emoji, x, y }]);
     };
 
-    
+
 
 
     const deleteImage = (id) =>
@@ -140,6 +140,9 @@ const CardPreview = ({
             className={`card-preview ${isActive ? "active" : ""}`}
             style={{
                 backgroundColor: card.backgroundColor,
+                backgroundImage: card.backgroundImage ? `url(${card.backgroundImage})` : "none",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
                 borderRadius: `${card.borderRadius}px`,
                 textAlign: card.textAlign,
                 color: card.textColor,
@@ -216,11 +219,11 @@ const CardPreview = ({
                     />
 
                     <button
-  className="toolbar-btn delete-btn"
-  onClick={() => deleteCard(card.id)}
->
-  <DeleteIcon /> Delete Card
-</button>
+                        className="toolbar-btn delete-btn"
+                        onClick={() => deleteCard(card.id)}
+                    >
+                        <DeleteIcon /> Delete Card
+                    </button>
 
 
                 </div>

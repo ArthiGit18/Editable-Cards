@@ -1,12 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../App.scss";
 
 
-const stickers = [
-    "/assets/stickers/heart.png",
-    "/assets/stickers/star.png",
-    "/assets/stickers/smile.png",
-];
 
 const emojis = ["😊", "🎉", "🌸", "🔥", "❤️", "🌟", "🐱", "🦋", "🍀"];
 
@@ -17,9 +12,7 @@ const Sidebar = ({
     showTemplates,
     setShowTemplates,
     activeCard,
-    updateCard,
-    onAddTextField, onUploadImage,
-    onAddCard, onDragStickerStart, onAddEmoji
+    updateCard, onUploadImage,
 }) => {
     const handleStyleChange = (field, value) => {
         if (!activeCard) return;
@@ -27,18 +20,6 @@ const Sidebar = ({
     };
 
 
-    const fileInputRef = useRef();
-
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                onUploadImage(event.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     return (
         <div className="sidebar">
