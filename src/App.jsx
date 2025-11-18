@@ -10,12 +10,11 @@ const App = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
 
-
   const addCard = () => {
     const newCard = {
       id: Date.now(),
       fields: [],
-      images: [], // store images per card
+      images: [],
       backgroundColor: "#ffffff",
       textColor: "#000000",
       borderRadius: 10,
@@ -23,13 +22,16 @@ const App = () => {
       lineHeight: 1.5,
       fontSize: 16,
       fontStyle: "normal",
+      backgroundImage: null,
     };
     setCards((prev) => [...prev, newCard]);
     setActiveCardId(newCard.id);
   };
 
   const updateCard = (id, updates) => {
-    setCards((prev) => prev.map((card) => (card.id === id ? { ...card, ...updates } : card)));
+    setCards((prev) =>
+      prev.map((card) => (card.id === id ? { ...card, ...updates } : card))
+    );
   };
 
   const deleteCard = (id) => {
@@ -37,15 +39,13 @@ const App = () => {
     if (activeCardId === id) setActiveCardId(null);
   };
 
-
   const activeCard = cards.find((c) => c.id === activeCardId) || null;
 
-
-  // optional: delete card / select card helpers
   const selectCard = (id) => setActiveCardId(id);
 
   return (
     <div className="app">
+      {/* 🧭 Left Sidebar */}
       <Sidebar
         addCard={addCard}
         showPreview={showPreview}
@@ -56,66 +56,74 @@ const App = () => {
         updateCard={updateCard}
         onUploadImage={(src) => {
           if (activeCard) {
-            const newImages = [...(activeCard.images || []), { id: Date.now(), src, x: 50, y: 50 }];
+            const newImages = [
+              ...(activeCard.images || []),
+              { id: Date.now(), src, x: 50, y: 50 },
+            ];
             updateCard(activeCard.id, { images: newImages });
           }
         }}
       />
 
+      {/* 🎨 Main Custom Area */}
       <div className="main">
-        {cards.map((card) => (
-          <CardPreview
-            key={card.id}
-            card={card}
-            updateCard={updateCard}
-            showPreview={showPreview}
-            onSelect={() => selectCard(card.id)}
-            isActive={card.id === activeCardId}
-            deleteCard={deleteCard}
-          />
-        ))}
 
-        {showPreview && cards.length > 0 && (
-          <div className="preview-buttons">
-            <button className="save-btn" onClick={() => alert("Card Saved!")}>
-              💾 Save
-            </button>
-            <button
-              className="print-btn"
-              onClick={() => window.print()}
-            >
-              🖨️ Print
-            </button>
-          </div>
-        )}
+        <div className="custom_card_section">
+          {cards.map((card) => (
+            <CardPreview
+              key={card.id}
+              card={card}
+              updateCard={updateCard}
+              showPreview={showPreview}
+              onSelect={() => selectCard(card.id)}
+              isActive={card.id === activeCardId}
+              deleteCard={deleteCard}
+            />
+          ))}
+        </div>
+        <div className="main_preview_action">
+
+          {showPreview && cards.length > 0 && (
+            <div className="preview-buttons">
+              <button className="save-btn" onClick={() => alert("Card Saved!")}>
+                💾 Save
+              </button>
+              <button className="print-btn" onClick={() => window.print()}>
+                🖨️ Print
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {showTemplates && (
-       <TemplatesPanel
-  onSelectTemplate={(template) => {
-    const newCard = {
-      id: Date.now(),
-      fields: [],
-      images: [],
-      backgroundColor: template.backgroundColor || "#ffffff",
-      textColor: template.textColor || "#000000",
-      borderRadius: template.borderRadius || 10,
-      fontSize: template.fontSize || 16,
-      fontStyle: template.fontStyle || "normal",
-      textAlign: "left",
-      lineHeight: 1.5,
-      backgroundImage: template.backgroundImage || null,
-    };
-    setCards((prev) => [...prev, newCard]);
-    setActiveCardId(newCard.id);
-    setShowTemplates(false);
-  }}
-/>
+      {/* 📂 Right Templates Panel */}
+    
+        <TemplatesPanel
+          cards={cards}
+          setCards={setCards}
+          selectedCardId={activeCardId}
+          onSelectTemplate={(template) => {
+            const newCard = {
+              id: Date.now(),
+              fields: [],
+              images: [],
+              backgroundColor: template.backgroundColor || "#ffffff",
+              textColor: template.textColor || "#000000",
+              borderRadius: template.borderRadius || 10,
+              fontSize: template.fontSize || 16,
+              fontStyle: template.fontStyle || "normal",
+              textAlign: "left",
+              lineHeight: 1.5,
+              backgroundImage: template.backgroundImage || null,
+            };
 
+            setCards((prev) => [...prev, newCard]);
+            setActiveCardId(newCard.id);
+            setShowTemplates(false);
+          }}
+        />
 
-      )}
-
-
+      
     </div>
   );
 };
